@@ -6,13 +6,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// Ito ang nagpapahintulot sa server na basahin ang background.jpg at iba pang files
+app.use(express.static(__dirname));
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
-});
-
-// I-serve din ang background image para direktang mabasa
-app.get('/background.jpg', (req, res) => {
-    res.sendFile(__dirname + '/background.jpg');
 });
 
 let timer = 90; // 90 seconds (1 minute and 30 seconds)

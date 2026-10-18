@@ -6,7 +6,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Ito ang nagpapahintulot sa server na basahin ang background.jpg at iba pang files
+// Nagpapahintulot sa server na basahin ang background.jpg at iba pang static files
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
@@ -53,6 +53,7 @@ io.on('connection', (socket) => {
     socket.on('startTimer', () => {
         if (!timerRunning) {
             timerRunning = true;
+            // Sabay-sabay na i-broadcast sa lahat (teacher at mga estudyante) na nagsimula na ang timer
             io.emit('timerStarted', { timer, timerRunning });
             
             timerInterval = setInterval(() => {

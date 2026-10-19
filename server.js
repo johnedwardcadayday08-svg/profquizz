@@ -6,14 +6,13 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Nagpapahintulot sa server na basahin ang background.jpg at iba pang static files
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-let timer = 90; // 90 seconds (1 minute and 30 seconds)
+let timer = 30; // Binaba sa 30 seconds
 let timerInterval = null;
 let timerRunning = false;
 let groupScores = { "Group 1": 0, "Group 2": 0, "Group 3": 0, "Group 4": 0 };
@@ -53,7 +52,6 @@ io.on('connection', (socket) => {
     socket.on('startTimer', () => {
         if (!timerRunning) {
             timerRunning = true;
-            // Sabay-sabay na i-broadcast sa lahat (teacher at mga estudyante) na nagsimula na ang timer
             io.emit('timerStarted', { timer, timerRunning });
             
             timerInterval = setInterval(() => {
@@ -72,7 +70,7 @@ io.on('connection', (socket) => {
     socket.on('resetGame', () => {
         clearInterval(timerInterval);
         timerInterval = null;
-        timer = 90;
+        timer = 30; // Reset sa 30 seconds
         timerRunning = false;
         groupScores = { "Group 1": 0, "Group 2": 0, "Group 3": 0, "Group 4": 0 };
         groupAnswers = { "Group 1": {}, "Group 2": {}, "Group 3": {}, "Group 4": {} };

@@ -6,13 +6,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// Pinapahintulot ang server na basahin ang background.jpg at iba pang static files
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-let timer = 30; // Binaba sa 30 seconds
+let timer = 30; // 30 Seconds Timer
 let timerInterval = null;
 let timerRunning = false;
 let groupScores = { "Group 1": 0, "Group 2": 0, "Group 3": 0, "Group 4": 0 };
@@ -70,7 +71,7 @@ io.on('connection', (socket) => {
     socket.on('resetGame', () => {
         clearInterval(timerInterval);
         timerInterval = null;
-        timer = 30; // Reset sa 30 seconds
+        timer = 30;
         timerRunning = false;
         groupScores = { "Group 1": 0, "Group 2": 0, "Group 3": 0, "Group 4": 0 };
         groupAnswers = { "Group 1": {}, "Group 2": {}, "Group 3": {}, "Group 4": {} };
